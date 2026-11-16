@@ -1,9 +1,9 @@
 name: Validate manager and SDK contract
 on:
   push:
-    paths: ['*.sh', '*.mjs', '*.py', 'SHA256SUMS', 'tests/**', '.github/workflows/validate.yml']
+    paths: ['*.sh', '*.mjs', '*.py', 'SHA256SUMS', 'tests/**', 'node-setup/**', '.github/workflows/validate.yml']
   pull_request:
-    paths: ['*.sh', '*.mjs', '*.py', 'SHA256SUMS', 'tests/**', '.github/workflows/validate.yml']
+    paths: ['*.sh', '*.mjs', '*.py', 'SHA256SUMS', 'tests/**', 'node-setup/**', '.github/workflows/validate.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
           for f in setup.sh ibt.sh install.sh keepalive.sh; do bash -n "$f"; done
           node --check platform.mjs
           node --check tests/sdk-contract.mjs
-          python3 -m py_compile cf_route.py cf_select.py heartbeat.py cloud.py ssh_tokens.py machine_opt.py node_probe.py system_info.py ui_time.py migrate.py tests/terminal_smoke.py tests/bootstrap_smoke.py tests/test_onboarding.py tests/test_heartbeat.py tests/test_cloud.py tests/test_ssh_tokens.py tests/test_fleet.py tests/test_migration.py tests/test_machine_opt.py tests/test_node_probe.py tests/test_quick.py tests/test_system_info.py tests/test_ui_time.py tests/test_cf_select.py tests/test_cf_dependencies.py tests/test_cf_route.py
+          python3 -m py_compile node-setup/node_setup.py tests/test_node_setup.py cf_route.py cf_select.py heartbeat.py cloud.py ssh_tokens.py machine_opt.py node_probe.py system_info.py ui_time.py migrate.py tests/terminal_smoke.py tests/bootstrap_smoke.py tests/test_onboarding.py tests/test_heartbeat.py tests/test_cloud.py tests/test_ssh_tokens.py tests/test_fleet.py tests/test_migration.py tests/test_machine_opt.py tests/test_node_probe.py tests/test_quick.py tests/test_system_info.py tests/test_ui_time.py tests/test_cf_select.py tests/test_cf_dependencies.py tests/test_cf_route.py
           bash ibt.sh --version
           bash ibt.sh help >/dev/null
       - name: Platform policy regression
